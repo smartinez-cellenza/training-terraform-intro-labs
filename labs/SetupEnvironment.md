@@ -161,7 +161,7 @@ It will
 - Intialize the backend
 - Download providers
 
-![terraform_init](assets/terraform_init.PNG)
+![terraform_init](../assets/terraform_init.PNG)
 
 
 1.  On your lab computer, start a web browser and navigate to [Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net). This utility site will automate the process of creating a new Azure DevOps project within your account that is prepopulated with content (work items, repos, etc.) required for the lab.
