@@ -9,7 +9,7 @@ In this lab, you will learn how to deploy a Storage Account and use terraform cl
 After you complete this lab, you will be able to:
 
 -   Deploy a Storage Account
--   Understant the Terraform worklow
+-   Understand the Terraform worklow
 
 ## Instructions
 
