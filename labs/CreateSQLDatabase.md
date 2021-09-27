@@ -53,8 +53,7 @@ variable "admin_account_login" {
 
 variable "admin_account_password" {
     type = string
-    description = "Admin account password"
-    default = "trainingadmindb"
+    description = "Admin account password"    
 }
 
 variable "project_name" {
