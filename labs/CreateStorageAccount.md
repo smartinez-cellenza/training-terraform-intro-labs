@@ -26,7 +26,7 @@ In the *main.tf* file, add the following **data** block to reference your Storag
 
 ```hcl
 data "azurerm_resource_group" "training-rg" {
-  name = "yourresourcegroupname"
+  name = "your_resource_group_name"
 }
 ```
 
@@ -38,7 +38,7 @@ Add the following **resource** block to create a Storage Account
 
 ```hcl
 resource "azurerm_storage_account" "example" {
-  name                     = "myuniquenamestorageaccount"
+  name                     = "myuniquenamestorageaccount" # <-- replace with a unique name
   resource_group_name      = data.azurerm_resource_group.training-rg.name
   location                 = "westeurope"
   account_tier             = "Standard"
@@ -56,7 +56,7 @@ Open a new shell and run the following commands:
 
 ```powershell
 az login
-$env:ARM_SUBSCRIPTION_ID="[Id of the provided training subscription]"
+$env:ARM_SUBSCRIPTION_ID="Id of the provided training subscription"
 terraform init -backend-config=".\configuration\dev-backend.hcl"
 terraform plan
 ```
@@ -142,7 +142,7 @@ terraform plan
 
 The plan is indicating a resource to delete and a resource to create
 
-> The azurerm provider will always try to perform update in-place actions. When it's not possible (change the name of a resource), a delete / create operation is done.
+> The azurerm provider will always try to perform update in-place actions. When it's not possible (changing the name of a resource for instance), a delete / create operation is done.
 
 Run the apply command
 
@@ -152,7 +152,7 @@ terraform apply
 
 Use the Azure portal to confirm that the existing Storage Account has been deleted and a new on created
 
-### Exercise 5: Remove the Storage Account name
+### Exercise 5: Remove the Storage Account
 
 Run the destroy command
 
