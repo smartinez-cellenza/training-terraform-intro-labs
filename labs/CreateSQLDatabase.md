@@ -85,7 +85,7 @@ In the configuration folder, add a new file nammed *dev.tfvars* and add this con
 
 ```hcl
 admin_account_login = "trainingadmindb"
-project_name = "[a project name]dev"
+project_name = "sampledev_with_my_trigram"
 location = "westeurope"
 ```
 
@@ -112,7 +112,7 @@ resource "azurerm_mssql_database" "test" {
 }
 ```
 
-We can use defined variables using the *var.name_of_the_variable* syntax.
+We can use variables using the *var.name_of_the_variable* syntax.
 
 For the name of the azurerm_mssql_server instance, we use the interpolation syntax.
 
@@ -122,7 +122,7 @@ Open a new shell and run the following commands:
 
 ```powershell
 az login
-$env:ARM_SUBSCRIPTION_ID="[Id of the provided training subscription]"
+$env:ARM_SUBSCRIPTION_ID="Id of the provided training subscription"
 $env:TF_VAR_admin_account_password="a_password_compliant_with_azure_sql_server_policy"
 terraform init -backend-config=".\configuration\dev-backend.hcl"
 terraform plan -var-file=".\configuration\dev.tfvars"
@@ -166,9 +166,9 @@ In order to deploy another environment, backend and tfvars file should be create
 In the *configuration* folder, create a new file nammed *prod-backend.hcl* with the following content
 
 ```hcl
-resource_group_name  = "[name of the Resource Group of the Storage Account]"
-storage_account_name = "[name of the Storage Account]"
-container_name       = "[Name of the container]"
+resource_group_name  = "name of the Resource Group of the Storage Account"
+storage_account_name = "name of the Storage Account"
+container_name       = "Name of the container"
 key                  = "training-prod.tfstate"
 ```
 
@@ -184,7 +184,7 @@ In a new shell, run the following command in sequence
 
 ```powershell
 az login
-$env:ARM_SUBSCRIPTION_ID="[Id of the provided training subscription]"
+$env:ARM_SUBSCRIPTION_ID="Id of the provided training subscription"
 $env:TF_VAR_admin_account_password="a_password_compliant_with_azure_sql_server_policy_but_not_the_same_used_for_dev"
 terraform init -backend-config=".\configuration\prod-backend.hcl" -reconfigure
 terraform plan -var-file=".\configuration\prod.tfvars"

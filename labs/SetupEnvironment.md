@@ -71,9 +71,9 @@ Create a Storage Account and a container in the Azure Portal
 
     ```hcl
     backend "azurerm" {
-      resource_group_name  = "[name of the Resource Group of the Storage Account]"
-      storage_account_name = "[name of the Storage Account]"
-      container_name       = "[Name of the container]"
+      resource_group_name  = "name of the Resource Group of the Storage Account you created"
+      storage_account_name = "name of the Storage Account you created"
+      container_name       = "Name of the container you created"
       key                  = "training.tfstate"
     }
     ```
@@ -116,9 +116,9 @@ terraform {
   required_version = ">= 1.0.0"
 
   backend "azurerm" {
-    resource_group_name  = "[name of the Resource Group of the Storage Account]"
-    storage_account_name = "[name of the Storage Account]"
-    container_name       = "[Name of the container]"
+    resource_group_name  = "name of the Resource Group of the Storage Account"
+    storage_account_name = "name of the Storage Account"
+    container_name       = "Name of the container"
     key                  = "training.tfstate"
   }
 
@@ -130,7 +130,7 @@ terraform {
 provider "azurerm" {
   skip_provider_registration = true
   features {}
-  subscription_id = "[Id of the provided subscription]"
+  subscription_id = "Id of the provided subscription"
 }
 ```
 
@@ -146,7 +146,7 @@ az login
 
 Select the provided training subscription
 ```
-az account set --subscription [subscriptionId]
+az account set --subscription the_provided_subscription_Id
 ```
 
 The first terraform command to run once you created your template is
@@ -207,7 +207,7 @@ Open a new shell session, and run the following commands:
 
 ```powershell
 az login
-$env:ARM_SUBSCRIPTION_ID="[Id of the provided training subscription]"
+$env:ARM_SUBSCRIPTION_ID="Id of the provided training subscription"
 terraform init
 ```
 
@@ -221,9 +221,9 @@ Backend configuration using command line parameters, or stored in an external fi
 1. Copy the content of the backend configuration block in this file. It should be
 
     ```hcl
-    resource_group_name  = "[name of the Resource Group of the Storage Account]"
-    storage_account_name = "[name of the Storage Account]"
-    container_name       = "[Name of the container]"
+    resource_group_name  = "name of the Resource Group of the Storage Account"
+    storage_account_name = "name of the Storage Account"
+    container_name       = "Name of the container"
     key                  = "training.tfstate"
     ```
 1. Remove the content of backend configuration block, and leave it empty.
