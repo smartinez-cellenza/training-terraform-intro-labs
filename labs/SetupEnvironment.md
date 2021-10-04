@@ -144,11 +144,6 @@ Once your template is ready, open a new shell and login using AZ CLI
 az login
 ```
 
-Select the provided training subscription
-```
-az account set --subscription the_provided_subscription_Id
-```
-
 The first terraform command to run once you created your template is
 
 ```hcl
