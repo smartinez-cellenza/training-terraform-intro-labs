@@ -173,9 +173,11 @@ key                  = "training-prod.tfstate"
 
 In the *configuration* folder, create a new file nammed *prod.tfvars* with the following content
 
+```hcl
 admin_account_login = "trainingadmindb"
 project_name = "[a project name]prod"
 location = "westeurope"
+```hcl
 
 #### Deploy resources
 
