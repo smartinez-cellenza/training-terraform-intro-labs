@@ -88,7 +88,7 @@ terraform destroy
 
 Confirm the deletion, approving with *yes*
 
-> For apply and destroy command, you can add the -auto-approve to the command line the avoid validaton
+> For apply and destroy command, you can add the -auto-approve option to the command line the avoid validaton
 
 Use the Azure portal to confirm resources deletion
 
