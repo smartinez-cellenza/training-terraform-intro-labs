@@ -142,6 +142,7 @@ Once your template is ready, open a new shell and login using AZ CLI
 
 ```bash
 az login
+az account set --subscription "subscription_id"
 ```
 
 The first terraform command to run once you created your template is
