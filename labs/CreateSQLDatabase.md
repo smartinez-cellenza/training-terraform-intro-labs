@@ -123,7 +123,7 @@ Open a new shell and run the following commands:
 az login
 $env:ARM_SUBSCRIPTION_ID="Id of the provided training subscription"
 $env:TF_VAR_admin_account_password="a_password_compliant_with_azure_sql_server_policy"
-terraform init -backend-config=".\configuration\dev-backend.hcl"
+terraform init -backend-config=".\configuration\dev-backend.hcl" -reconfigure
 terraform plan -var-file=".\configuration\dev.tfvars"
 ```
 
