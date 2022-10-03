@@ -166,7 +166,7 @@ It will
 
 ### Exercice 3: Conventions
 
-> This step is not mandatory bu will allow you to keep you template readable and maintenable over time. You should adopt this convention as soon as possible
+> This step is not mandatory but will allow you to keep you template readable and maintenable over time. You should adopt this convention as soon as possible
 
 To keep a clean organization in your folder, split the main.tf:
 
