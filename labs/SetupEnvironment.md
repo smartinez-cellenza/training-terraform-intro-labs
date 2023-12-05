@@ -53,7 +53,7 @@ Create a Storage Account and a container in the Azure Portal
 
 #### Create the configuration file
 
-1. In a local empty folder, create a file nammed *main.tf*
+1. In a local empty folder, create a file named *main.tf*
 
     > The name of the file has no importance, only its extension. main.tf is only a convention
 
