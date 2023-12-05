@@ -30,7 +30,7 @@ After you complete this lab, you will be able to:
 
 In order to store the Terraform tfstate file, we're going to use a Blob Storage.
 
-By default, Terraform will create this file locally, in a file nammed *terraform.tfstate*. This file contains informations on real world infrastructure, including sensible data (for instance, Virutal Machines admin account password). There are reasons why this option should be disregared
+By default, Terraform will create this file locally, in a file named *terraform.tfstate*. This file contains informations on real world infrastructure, including sensible data (for instance, Virutal Machines admin account password). There are reasons why this option should be disregared
 
 - Templates should be commited to a source code repository, and should not contains sensible data.
 - A deployment should be required when the author of the template is on vacation, collaborative work should be the norm.
@@ -170,8 +170,8 @@ It will
 
 To keep a clean organization in your folder, split the main.tf:
 
-- create a new file nammed *version.tf* that contains the terraform configuration block
-- create a new file nammed *provider.tf* that contains the provider azurerm block
+- create a new file named *version.tf* that contains the terraform configuration block
+- create a new file named *provider.tf* that contains the provider azurerm block
 
 Run the terraform init command to ensure this refactoring is fine
 
@@ -186,7 +186,7 @@ Some settings in this template may vary when deploying to different environment:
 
 #### Use an environment variable to select the subscription
 
-The subscription where deployment should be performed can be sourced from an environment variable, nammed *ARM_SUBSCRIPTION_ID*.
+The subscription where deployment should be performed can be sourced from an environment variable, named *ARM_SUBSCRIPTION_ID*.
 
 Using this mechanism allow to keep a template clean from any configuration settings.
 
@@ -213,7 +213,7 @@ Backend configuration using command line parameters, or stored in an external fi
 
 > For an overview of partial configuration - https://www.terraform.io/docs/language/settings/backends/configuration.html#partial-configuration
 
-1. Create a folder called *configuration* and a file nammed *dev-backend.hcl* in it
+1. Create a folder called *configuration* and a file named *dev-backend.hcl* in it
 1. Copy the content of the backend configuration block in this file. It should be
 
     ```hcl
