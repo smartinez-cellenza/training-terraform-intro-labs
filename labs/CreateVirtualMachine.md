@@ -41,7 +41,7 @@ resource "azurerm_linux_virtual_machine" "example" {
   name                = "example-machine"
   resource_group_name  = data.azurerm_resource_group.training-rg.name
   location            = "westeurope"
-  size                = "Standard_F2"
+  size                = "Standard_B2s"
   admin_username      = "adminuser"
   admin_password      = "P@ssword01!!"
   disable_password_authentication = false
@@ -55,10 +55,11 @@ resource "azurerm_linux_virtual_machine" "example" {
   }
 
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "22_04-lts"
+    publisher = "canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-gen2"
     version   = "latest"
+
   }
 }
 
