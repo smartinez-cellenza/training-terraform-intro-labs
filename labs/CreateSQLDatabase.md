@@ -42,7 +42,7 @@ In order to be more dynamic, templates use variables.
 
 This variables can be used to use the same template for multiple environments.
 
-Add a new file, nammed *variables.tf* and add this content
+Add a new file, named *variables.tf* and add this content
 
 ```hcl
 variable "admin_account_login" {
@@ -80,7 +80,7 @@ We will use a tfvars file for admin_account_login, project_name and location and
 
 > Environment variable are a convenient way to manage sensitive data. There is no risk to commit them and this mechanism can easilly be included in CI/CD tools
 
-In the configuration folder, add a new file nammed *dev.tfvars* and add this content
+In the configuration folder, add a new file named *dev.tfvars* and add this content
 
 ```hcl
 admin_account_login = "trainingadmindb"
@@ -163,7 +163,7 @@ In order to deploy another environment, backend and tfvars file should be create
 
 #### Create backend configuration
 
-In the *configuration* folder, create a new file nammed *prod-backend.hcl* with the following content
+In the *configuration* folder, create a new file named *prod-backend.hcl* with the following content
 
 ```hcl
 resource_group_name  = "name of the Resource Group of the Storage Account"
@@ -172,7 +172,7 @@ container_name       = "Name of the container"
 key                  = "training-prod.tfstate"
 ```
 
-In the *configuration* folder, create a new file nammed *prod.tfvars* with the following content
+In the *configuration* folder, create a new file named *prod.tfvars* with the following content
 
 ```hcl
 admin_account_login = "trainingadmindb"
