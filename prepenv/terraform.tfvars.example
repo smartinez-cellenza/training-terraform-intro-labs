@@ -1,0 +1,18 @@
+
+######################################################################
+# config variables 
+######################################################################
+
+######################################################################
+#Provider variable
+
+
+AzureADClientID     = ""
+AzureADClientSecret = ""
+
+
+AzureSubscriptionID = ""
+AzureClientID       = ""
+AzureClientSecret   = ""
+AzureTenantID       = ""
+
