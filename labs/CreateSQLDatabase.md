@@ -70,7 +70,6 @@ variable "admin_account_login" {
 variable "admin_account_password" {
     type = string
     description = "Admin account password"
-    default = "trainingadmindb"
 }
 
 variable "project_name" {
@@ -140,7 +139,7 @@ Open a new shell and run the following commands:
 az login
 $env:ARM_SUBSCRIPTION_ID="Id of the provided training subscription"
 $env:TF_VAR_admin_account_password="a_password_compliant_with_azure_sql_server_policy"
-terraform init -backend-config=".\configuration\dev-backend.hcl"
+terraform init -backend-config=".\configuration\dev-backend.hcl" -reconfigure
 terraform plan -var-file=".\configuration\dev.tfvars"
 ```
 
@@ -207,7 +206,19 @@ $env:TF_VAR_admin_account_password="a_password_compliant_with_azure_sql_server_p
 terraform init -backend-config=".\configuration\prod-backend.hcl" -reconfigure
 terraform plan -var-file=".\configuration\prod.tfvars"
 terraform apply -var-file=".\configuration\prod.tfvars"
-terraform destroy -var-file=".\configuration\prod.tfvars"
 ```
 
 > Prod environment has its own backend configuration and tfvars file. It could be deployed in another subscription
+
+#### Remove resources
+
+In a new shell, run the following command in sequence
+
+```powershell
+az login
+$env:ARM_SUBSCRIPTION_ID="Id of the provided training subscription"
+$env:TF_VAR_admin_account_password="a_password_compliant_with_azure_sql_server_policy_but_not_the_same_used_for_dev"
+terraform init -backend-config=".\configuration\prod-backend.hcl" -reconfigure
+terraform destroy -var-file=".\configuration\prod.tfvars"
+```
+
