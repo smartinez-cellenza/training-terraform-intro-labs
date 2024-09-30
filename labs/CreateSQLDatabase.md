@@ -1,4 +1,20 @@
-# Setup environment
+# Create an Azure SQL Database
+
+Table of Contents
+=================
+
+* [Lab overview](#lab-overview)
+* [Objectives](#objectives)
+* [Instructions](#instructions)
+  * [Before you start](#before-you-start)
+  * [Exercise 1: Deploy an Azure SQL Database](#exercise-1-deploy-an-azure-sql-database)
+    * [Add variables](#add-variables)
+    * [Create Azure SQL Server and Database](#create-azure-sql-server-and-database)
+    * [Deploy resources](#deploy-resources)
+    * [Remove resources](#remove-resources)
+  * [Exercise 2: Deploy another environment](#exercise-2-deploy-another-environment)
+    * [Create backend configuration](#create-backend-configuration)
+    * [Deploy resources](#deploy-resources-1)
 
 ## Lab overview
 
@@ -27,7 +43,7 @@ After you complete this lab, you will be able to:
 In the *main.tf* file, add the following **data** block to reference your Storage Account
 
 ```hcl
-data "azurerm_resource_group" "training-rg" {
+data "azurerm_resource_group" "training_rg" {
   name = "yourresourcegroupname"
 }
 ```
@@ -42,7 +58,7 @@ In order to be more dynamic, templates use variables.
 
 This variables can be used to use the same template for multiple environments.
 
-Add a new file, nammed *variables.tf* and add this content
+Add a new file, named *variables.tf* and add this content
 
 ```hcl
 variable "admin_account_login" {
@@ -81,12 +97,12 @@ We will use a tfvars file for admin_account_login, project_name and location and
 
 > Environment variable are a convenient way to manage sensitive data. There is no risk to commit them and this mechanism can easilly be included in CI/CD tools
 
-In the configuration folder, add a new file nammed *dev.tfvars* and add this content
+In the configuration folder, add a new file named *dev.tfvars* and add this content
 
 ```hcl
 admin_account_login = "trainingadmindb"
-project_name = "sampledev_with_my_trigram"
-location = "westeurope"
+project_name        = "sampledev_with_my_trigram"
+location            = "westeurope"
 ```
 
 > project_name will be used to create resources with a public FQDN. Choose an unique one for your resources
@@ -98,14 +114,14 @@ In the *main.tf* file add the following blocks to create an Azure SQL Server and
 ```hcl
 resource "azurerm_mssql_server" "training_sql_srv" {
   name                         = "${var.project_name}-sqlsrv"
-  resource_group_name          = data.azurerm_resource_group.training-rg.name
+  resource_group_name          = data.azurerm_resource_group.training_rg.name
   location                     = var.location
   version                      = "12.0"
   administrator_login          = var.admin_account_login
   administrator_login_password = var.admin_account_password
 }
 
-resource "azurerm_mssql_database" "test" {
+resource "azurerm_mssql_database" "training_db" {
   name           = "test-db"
   server_id      = azurerm_mssql_server.training_sql_srv.id
   sku_name       = "S0"
@@ -163,7 +179,7 @@ In order to deploy another environment, backend and tfvars file should be create
 
 #### Create backend configuration
 
-In the *configuration* folder, create a new file nammed *prod-backend.hcl* with the following content
+In the *configuration* folder, create a new file named *prod-backend.hcl* with the following content
 
 ```hcl
 resource_group_name  = "name of the Resource Group of the Storage Account"
@@ -172,11 +188,13 @@ container_name       = "Name of the container"
 key                  = "training-prod.tfstate"
 ```
 
-In the *configuration* folder, create a new file nammed *prod.tfvars* with the following content
+In the *configuration* folder, create a new file named *prod.tfvars* with the following content
 
+```hcl
 admin_account_login = "trainingadmindb"
-project_name = "[a project name]prod"
-location = "westeurope"
+project_name        = "a project name-prod"
+location            = "westeurope"
+```
 
 #### Deploy resources
 

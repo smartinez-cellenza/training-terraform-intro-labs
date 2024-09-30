@@ -1,4 +1,15 @@
-# Setup environment
+# Use Modules Gallery
+
+Table of Contents
+=================
+
+* [Lab overview](#lab-overview)
+* [Objectives](#objectives)
+* [Instructions](#instructions)
+  * [Before you start](#before-you-start)
+  * [Exercise 1: Download a module](#exercise-1-download-a-module)
+  * [Exercise 2: instantiate a module](#exercise-2-instantiate-a-module)
+  * [Exercise 3: Remove resources](#exercise-3-remove-resources)
 
 ## Lab overview
 
@@ -25,7 +36,7 @@ After you complete this lab, you will be able to:
 In the *main.tf* file, add the following **data** block to reference your Storage Account
 
 ```hcl
-data "azurerm_resource_group" "training-rg" {
+data "azurerm_resource_group" "training_rg" {
   name = "yourresourcegroupname"
 }
 ```
@@ -39,7 +50,7 @@ Add the following blocks to reference a module from the gallery
 ```hcl
 module "network" {
   source              = "Azure/network/azurerm"
-  resource_group_name = data.azurerm_resource_group.training-rg.name
+  resource_group_name = data.azurerm_resource_group.training_rg.name
   address_spaces      = ["10.0.0.0/16", "10.2.0.0/16"]
   subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   subnet_names        = ["subnet1", "subnet2", "subnet3"]
@@ -48,7 +59,7 @@ module "network" {
 
 > The documentation on this module can be found at https://registry.terraform.io/modules/Azure/network/azurerm/latest
 
-> Module download is done when terraform init is run. If you add a module in your template, run terraform init to download it.
+> Module is downloaded when terraform init is run. If you add a module in your template, run terraform init again to download it.
 
 Open a new shell and run the following commands:
 

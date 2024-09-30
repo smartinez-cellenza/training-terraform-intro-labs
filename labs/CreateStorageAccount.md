@@ -1,4 +1,17 @@
-# Setup environment
+# Create Storage Account
+
+Table of Contents
+=================
+
+* [Lab overview](#lab-overview)
+* [Objectives](#objectives)
+* [Instructions](#instructions)
+  * [Before you start](#before-you-start)
+  * [Exercise 1: Deploy a Storage Account](#exercise-1-deploy-a-storage-account)
+  * [Exercise 2: Update the Storage Account](#exercise-2-update-the-storage-account)
+  * [Exercise 3: Update the Storage Account from the portal](#exercise-3-update-the-storage-account-from-the-portal)
+  * [Exercise 4: Update the Storage Account name](#exercise-4-update-the-storage-account-name)
+  * [Exercise 5: Remove the Storage Account](#exercise-5-remove-the-storage-account)
 
 ## Lab overview
 
@@ -25,21 +38,21 @@ After you complete this lab, you will be able to:
 In the *main.tf* file, add the following **data** block to reference your Storage Account
 
 ```hcl
-data "azurerm_resource_group" "training-rg" {
+data "azurerm_resource_group" "training_rg" {
   name = "your_resource_group_name"
 }
 ```
 
-> Since this Resource Group has been created outside of Terraform, we will use a data block to retrieve its configuration.
+> Since this Resource Group has been created outside of this Terraform template, we will use a data block to retrieve its configuration.
 
 > No change will be done on this Resource Group, this template does not manage its lifecyle.
 
 Add the following **resource** block to create a Storage Account
 
 ```hcl
-resource "azurerm_storage_account" "example" {
+resource "azurerm_storage_account" "training_storage" {
   name                     = "myuniquenamestorageaccount" # <-- replace with a unique name
-  resource_group_name      = data.azurerm_resource_group.training-rg.name
+  resource_group_name      = data.azurerm_resource_group.training_rg.name
   location                 = "westeurope"
   account_tier             = "Standard"
   account_replication_type = "GRS"
@@ -82,7 +95,7 @@ Update the previous configuration and add a new tag in the *tags* block
 ```hcl
 tags = {
     environment = "dev"
-    location = "westeurope"
+    location    = "westeurope"
 }
 ```
 
