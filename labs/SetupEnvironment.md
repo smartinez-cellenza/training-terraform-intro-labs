@@ -1,5 +1,21 @@
 # Setup environment
 
+Table of Contents
+=================
+
+* [Lab overview](#lab-overview)
+* [Objectives](#objectives)
+* [Instructions](#instructions)
+  * [Before you start](#before-you-start)
+  * [Exercise 1: Create a Storage Account and a Container](#exercise-1-create-a-storage-account-and-a-container)
+  * [Exercice 2: Setup the template configuration](#exercice-2-setup-the-template-configuration)
+    * [Create the configuration file](#create-the-configuration-file)
+    * [Terraform init](#terraform-init)
+  * [Exercice 3: Conventions](#exercice-3-conventions)
+  * [Exercice 4: Make it more dynamic](#exercice-4-make-it-more-dynamic)
+    * [Use an environment variable to select the subscription](#use-an-environment-variable-to-select-the-subscription)
+    * [Use partial backend configuration](#use-partial-backend-configuration)
+
 ## Lab overview
 
 In order to deploy infrastructure with Terraform some configuration is mandatory, without considering the resources themselfs. This configuration is about:
@@ -30,7 +46,7 @@ After you complete this lab, you will be able to:
 
 In order to store the Terraform tfstate file, we're going to use a Blob Storage.
 
-By default, Terraform will create this file locally, in a file nammed *terraform.tfstate*. This file contains informations on real world infrastructure, including sensible data (for instance, Virutal Machines admin account password). There are reasons why this option should be disregared
+By default, Terraform will create this file locally, in a file named *terraform.tfstate*. This file contains informations on real world infrastructure, including sensible data (for instance, Virutal Machines admin account password). There are reasons why this option should be disregared
 
 - Templates should be commited to a source code repository, and should not contains sensible data.
 - A deployment should be required when the author of the template is on vacation, collaborative work should be the norm.
@@ -46,14 +62,14 @@ Create a Storage Account and a container in the Azure Portal
 
 > Terraform will not create this storage and assume it is existing. This should be the unique manual creation when you use Terraform.
 
-> The creation of this storage should be done using AZ CLI or Powershell
+> The creation of this storage should be done using AZ CLI, Powershell or the Azure Portal
 
 
 ### Exercice 2: Setup the template configuration
 
 #### Create the configuration file
 
-1. In a local empty folder, create a file nammed *main.tf*
+1. In a local empty folder, create a file named *main.tf*
 
     > The name of the file has no importance, only its extension. main.tf is only a convention
 
@@ -80,13 +96,13 @@ Create a Storage Account and a container in the Azure Portal
 
     > There are multiple type of backend that might be used. All majors Cloud Providers have their own (s3 for AWS, gcs for GCP,... )
 
-    > This configuration is valid for an authentication using AZ CLI. If you're using a Service Principal or a Managed Identity, additionnal fields may be mandatory. https://www.terraform.io/docs/language/settings/backends/azurerm.html
+    > This configuration is valid for an authentication using AZ CLI. If you're using a Service Principal or a Managed Identity, additionnal fields may be mandatory. https://developer.hashicorp.com/terraform/language/backend/azurerm
 
 1. In the terraform configuration block add the provider requirements:
 
     ```hcl
     required_providers {
-      azurerm = ">= 2.75.0"
+      azurerm = ">= 4.0.0"
     }
     ```
 
@@ -96,14 +112,14 @@ Create a Storage Account and a container in the Azure Portal
 
     ```hcl
     provider "azurerm" {
-      skip_provider_registration = true
+      resource_provider_registrations = "none"
       features {}
-      subscription_id = [Id of the provided subscription]
+      subscription_id = "Id of the provided subscription"
     }
     ```
 
     The configuration of the azurerm provider:
-    - **skip_provider_registration**: The provider will not try to register all the Resource Providers it supports
+    - **resource_provider_registrations**: Set of Azure Resource Providers to automatically register when initializing the AzureRM Provider
     - **feature**: List of features that might be activated on the provider
     - **subscription_id**: The Id of the subscription
 
@@ -123,12 +139,12 @@ terraform {
   }
 
   required_providers {
-    azurerm = ">= 2.75.0"
+    azurerm = ">= 4.0.0"
   }
 }
 
 provider "azurerm" {
-  skip_provider_registration = true
+  resource_provider_registrations = "none"
   features {}
   subscription_id = "Id of the provided subscription"
 }
@@ -142,7 +158,11 @@ Once your template is ready, open a new shell and login using AZ CLI
 
 ```bash
 az login
-az account set --subscription "subscription_id"
+```
+
+Select the provided training subscription
+```
+az account set --subscription the_provided_subscription_Id
 ```
 
 The first terraform command to run once you created your template is
@@ -166,27 +186,27 @@ It will
 
 ### Exercice 3: Conventions
 
-> This step is not mandatory bu will allow you to keep you template readable and maintenable over time. You should adopt this convention as soon as possible
+> This step is not mandatory but will allow you to keep you template readable and maintenable over time. You should adopt this convention as soon as possible
 
 To keep a clean organization in your folder, split the main.tf:
 
-- create a new file nammed *version.tf* that contains the terraform configuration block
-- create a new file nammed *provider.tf* that contains the provider azurerm block
+- create a new file named *version.tf* that contains the terraform configuration block
+- create a new file named *provider.tf* that contains the provider azurerm block
 
 Run the terraform init command to ensure this refactoring is fine
 
 ### Exercice 4: Make it more dynamic
 
-> This step is not mandatory bu will allow you to keep you template readable and maintenable over time. You should adopt this convention as soon as possible
+> This step is not mandatory but will allow you to keep you template readable and maintenable over time. You should adopt this convention as soon as possible
 
 Some settings in this template may vary when deploying to different environment:
 
 - the subscription
-- the backend Storage Account
+- the backend configuration (Storage Account, container or key)
 
 #### Use an environment variable to select the subscription
 
-The subscription where deployment should be performed can be sourced from an environment variable, nammed *ARM_SUBSCRIPTION_ID*.
+The subscription where deployment should be performed can be sourced from an environment variable, named *ARM_SUBSCRIPTION_ID*.
 
 Using this mechanism allow to keep a template clean from any configuration settings.
 
@@ -194,7 +214,7 @@ Remove the subscription_id from the provider configuration block in the *provide
 
 ```hcl
 provider "azurerm" {
-  skip_provider_registration = true
+  resource_provider_registrations = "none"
   features {}
 }
 ```
@@ -211,18 +231,22 @@ terraform init
 
 Backend configuration using command line parameters, or stored in an external file. This mechanism is called partial configuration.
 
-> For an overview of partial configuration - https://www.terraform.io/docs/language/settings/backends/configuration.html#partial-configuration
+> For an overview of partial configuration - https://developer.hashicorp.com/terraform/language/backend#partial-configuration
 
-1. Create a folder called *configuration* and a file nammed *dev-backend.hcl* in it
+1. Create a folder called *configuration* and a file named *dev-backend.hcl* in it
 1. Copy the content of the backend configuration block in this file. It should be
 
-    ```hcl
-    resource_group_name  = "name of the Resource Group of the Storage Account"
-    storage_account_name = "name of the Storage Account"
-    container_name       = "Name of the container"
-    key                  = "training.tfstate"
-    ```
+```hcl
+resource_group_name  = "name of the Resource Group of the Storage Account"
+storage_account_name = "name of the Storage Account"
+container_name       = "Name of the container"
+key                  = "training.tfstate"
+```
 1. Remove the content of backend configuration block, and leave it empty.
+
+```hcl
+backend "azurerm" {}
+```
 
 We can now set the backend using the CLI option, running the following command:
 

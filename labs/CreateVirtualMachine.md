@@ -1,4 +1,14 @@
-# Setup environment
+# Create Virtual Machine
+
+Table of Contents
+=================
+
+* [Lab overview](#lab-overview)
+  * [Objectives](#objectives)
+  * [Instructions](#instructions)
+    * [Before you start](#before-you-start)
+    * [Exercise 1: Deploy an Azure Virtual Machine](#exercise-1-deploy-an-azure-virtual-machine)
+    * [Exercise 3: Remove resources](#exercise-3-remove-resources)
 
 ## Lab overview
 
@@ -25,7 +35,7 @@ After you complete this lab, you will be able to:
 In the *main.tf* file, add the following **data** block to reference your Storage Account
 
 ```hcl
-data "azurerm_resource_group" "training-rg" {
+data "azurerm_resource_group" "training_rg" {
   name = "yourresourcegroupname"
 }
 ```
@@ -37,16 +47,16 @@ data "azurerm_resource_group" "training-rg" {
 Add the following blocks to create a Virtual Machine
 
 ```hcl
-resource "azurerm_linux_virtual_machine" "example" {
-  name                = "example-machine"
-  resource_group_name  = data.azurerm_resource_group.training-rg.name
+resource "azurerm_linux_virtual_machine" "training_vm" {
+  name                = "training-vm"
+  resource_group_name  = data.azurerm_resource_group.training_rg.name
   location            = "westeurope"
-  size                = "Standard_F2"
+  size                = "Standard_B2s"
   admin_username      = "adminuser"
   admin_password      = "P@ssword01!!"
   disable_password_authentication = false
   network_interface_ids = [
-    azurerm_network_interface.example.id,
+    azurerm_network_interface.training_vm_nic.id,
   ]
 
   os_disk {
@@ -55,37 +65,37 @@ resource "azurerm_linux_virtual_machine" "example" {
   }
 
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    publisher = "canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-gen2"
     version   = "latest"
   }
 }
 
-resource "azurerm_network_interface" "example" {
-  name                = "example-nic"
+resource "azurerm_network_interface" "training_vm_nic" {
+  name                = "nic-training-vm"
   location            = "westeurope"
-  resource_group_name  = data.azurerm_resource_group.training-rg.name
+  resource_group_name  = data.azurerm_resource_group.training_rg.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.example.id
+    subnet_id                     = azurerm_subnet.training_vm_subnet.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_subnet" "example" {
+resource "azurerm_subnet" "training_vm_subnet" {
   name                 = "internal"
-  resource_group_name  = data.azurerm_resource_group.training-rg.name
-  virtual_network_name = azurerm_virtual_network.example.name
+  resource_group_name  = data.azurerm_resource_group.training_rg.name
+  virtual_network_name = azurerm_virtual_network.traing_vnet.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_virtual_network" "example" {
-  name                = "example-network"
+resource "azurerm_virtual_network" "traing_vnet" {
+  name                = "vnet-training"
   address_space       = ["10.0.0.0/16"]
   location            = "westeurope"
-  resource_group_name = data.azurerm_resource_group.training-rg.name
+  resource_group_name = data.azurerm_resource_group.training_rg.name
 }
 ```
 
